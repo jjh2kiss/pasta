@@ -108,3 +108,22 @@ func TestProcessTableClone(t *testing.T) {
 	}
 
 }
+
+func TestProcessTableGetOrDefault(t *testing.T) {
+	table, err := NewProcessTable()
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+
+	p := table.GetOrDefault(os.Getpid())
+	if p.Pid != 999999 {
+		t.Errorf("expected 999999 but %d", p.Pid)
+		return
+	}
+
+	if p.Cmdline.String() != "<unknown>" {
+		t.Errorf("expected <unknown> but %s", p.Cmdline.String())
+		return
+	}
+
+}

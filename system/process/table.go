@@ -2,7 +2,9 @@ package process
 
 import (
 	"fmt"
+	"strings"
 	"sync"
+	"time"
 )
 
 type ProcessTable struct {
@@ -78,6 +80,23 @@ func (self *ProcessTable) Get(pid int) (*Process, error) {
 		return nil, fmt.Errorf("Invalid pid: %d", pid)
 	}
 	return p, nil
+}
+
+func (self *ProcessTable) GetOrDefault(pid int) *Process {
+	process, err := self.Get(pid)
+	if err != nil {
+		cmdline, _ := NewCmdline(strings.NewReader("<unknown>"))
+		process = &Process{
+			Pid:          999999,
+			Cmdline:      cmdline,
+			Stat:         &ProcessStat{Pid: 999999},
+			TimeStamp:    time.Now(),
+			KernelThread: false,
+		}
+	}
+
+	return process
+
 }
 
 func (self *ProcessTable) Clone() (*ProcessTable, error) {

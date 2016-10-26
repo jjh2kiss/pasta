@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/jjh2kiss/pstat/config"
 	"github.com/jjh2kiss/pstat/system/process"
 )
 
@@ -15,7 +16,7 @@ func TestNewStatsTable(t *testing.T) {
 		return
 	}
 
-	table := NewStatsTable(processes)
+	table := NewStatsTable(processes, &config.Config{})
 
 	if table == nil {
 		t.Errorf("Fail to make Stats Table")
@@ -31,8 +32,10 @@ func TestNewStatsTableUpdate1(t *testing.T) {
 		return
 	}
 
+	cmdline := self_cmdline.String()
+
 	expected := &Stats{
-		Cmdline: self_cmdline,
+		Cmdline: cmdline,
 		Total:   1,
 		Count: [STAT_LAST]uint64{
 			STAT_FORK: 1,
@@ -46,7 +49,7 @@ func TestNewStatsTableUpdate1(t *testing.T) {
 	}
 	processes.Add(os.Getpid())
 
-	table := NewStatsTable(processes)
+	table := NewStatsTable(processes, &config.Config{})
 
 	if table == nil {
 		t.Errorf("Fail to make Stats Table")
@@ -75,8 +78,10 @@ func TestNewStatsTableUpdate2(t *testing.T) {
 		return
 	}
 
+	cmdline := self_cmdline.String()
+
 	expected := &Stats{
-		Cmdline: self_cmdline,
+		Cmdline: cmdline,
 		Total:   2,
 		Count: [STAT_LAST]uint64{
 			STAT_FORK: 2,
@@ -90,7 +95,7 @@ func TestNewStatsTableUpdate2(t *testing.T) {
 	}
 	processes.Add(os.Getpid())
 
-	table := NewStatsTable(processes)
+	table := NewStatsTable(processes, &config.Config{})
 
 	if table == nil {
 		t.Errorf("Fail to make Stats Table")

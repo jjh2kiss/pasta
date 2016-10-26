@@ -1,7 +1,5 @@
 package stats
 
-import "github.com/jjh2kiss/pstat/system/process"
-
 const (
 	STAT_FORK = iota
 	STAT_EXEC = iota
@@ -12,7 +10,7 @@ const (
 )
 
 type Stats struct {
-	Cmdline *process.Cmdline
+	Cmdline string
 	Total   uint64
 	Count   [STAT_LAST]uint64
 }
@@ -20,11 +18,7 @@ type Stats struct {
 type StatsMap map[string]*Stats
 type StatsList []*Stats
 
-func NewStats(cmdline *process.Cmdline) *Stats {
-	if cmdline == nil {
-		return nil
-	}
-
+func NewStats(cmdline string) *Stats {
 	return &Stats{Cmdline: cmdline}
 }
 

@@ -26,15 +26,23 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/urfave/cli"
+
+	"github.com/jjh2kiss/pstat/config"
+	"github.com/jjh2kiss/pstat/monitor"
+	"github.com/jjh2kiss/pstat/utils"
+	"golang.org/x/net/context"
 )
 
 func main() {
 	app := cli.NewApp()
 	app.Name = "pstat"
-	app.Usage = "monitoring fork(), exec(), exit()"
+	app.Usage = "monitoring process event, such as fork(), exec(), exit()"
 	app.Version = "0.1"
 	app.Authors = []cli.Author{
 		cli.Author{
@@ -70,14 +78,48 @@ func main() {
 		},
 	}
 
+	config := config.Config{}
+
+	ctx, cancel := context.WithCancel(context.Background())
+
+	//signal handler
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+
+	go func() {
+		<-sigs
+		cancel()
+	}()
+
 	app.Before = func(c *cli.Context) error {
 		if os.Geteuid() != 0 {
 			return fmt.Errorf("Need to run with root privilege.\n")
 		}
+
+		config.Dirstrip = c.Bool("dirstrip")
+		config.Duration = c.Int64("duration")
+		config.Shortname = c.Bool("shortname")
+		config.Statistics = c.Bool("statistics")
+		config.Quiet = c.Bool("quiet")
+
+		names := c.StringSlice("event")
+		if len(names) > 0 {
+			for _, name := range names {
+				event := utils.ProcEventUint32(name)
+				config.Events |= event
+			}
+		} else {
+			config.Events = 0xffffffff
+		}
+
 		return nil
 	}
 
 	app.Action = func(c *cli.Context) {
+		err := monitor.Monitor(&config, ctx.Done())
+		if err != nil {
+			log.Fatal(err.Error())
+		}
 	}
 
 	app.After = func(c *cli.Context) error {

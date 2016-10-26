@@ -35,6 +35,13 @@ func NewProcess(pid int) (*Process, error) {
 		return nil, err
 	}
 
+	if len(cmdline.Slice()) == 0 {
+		cmdline, err = NewCommByPid(pid)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	stat, err := NewProcessStatByPid(pid)
 	if err != nil {
 		return nil, err

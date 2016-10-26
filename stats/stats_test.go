@@ -16,18 +16,16 @@ func TestStatsNewStat(t *testing.T) {
 		return
 	}
 
+	cmdline := self_cmdline.String()
+
 	testcases := []struct {
-		cmdline  *process.Cmdline
+		cmdline  string
 		expected *Stats
 	}{
 		{
-			cmdline:  nil,
-			expected: nil,
-		},
-		{
-			cmdline: self_cmdline,
+			cmdline: cmdline,
 			expected: &Stats{
-				Cmdline: self_cmdline,
+				Cmdline: cmdline,
 			},
 		},
 	}
@@ -47,6 +45,8 @@ func TestStatsUpdate(t *testing.T) {
 		return
 	}
 
+	cmdline := self_cmdline.String()
+
 	testcases := []struct {
 		events   []int
 		expected *Stats
@@ -54,7 +54,7 @@ func TestStatsUpdate(t *testing.T) {
 		{
 			events: []int{STAT_FORK},
 			expected: &Stats{
-				Cmdline: self_cmdline,
+				Cmdline: cmdline,
 				Total:   1,
 				Count: [STAT_LAST]uint64{
 					STAT_FORK: 1,
@@ -64,7 +64,7 @@ func TestStatsUpdate(t *testing.T) {
 		{
 			events: []int{STAT_EXEC},
 			expected: &Stats{
-				Cmdline: self_cmdline,
+				Cmdline: cmdline,
 				Total:   1,
 				Count: [STAT_LAST]uint64{
 					STAT_EXEC: 1,
@@ -74,7 +74,7 @@ func TestStatsUpdate(t *testing.T) {
 		{
 			events: []int{STAT_EXIT},
 			expected: &Stats{
-				Cmdline: self_cmdline,
+				Cmdline: cmdline,
 				Total:   1,
 				Count: [STAT_LAST]uint64{
 					STAT_EXIT: 1,
@@ -84,7 +84,7 @@ func TestStatsUpdate(t *testing.T) {
 		{
 			events: []int{STAT_CORE},
 			expected: &Stats{
-				Cmdline: self_cmdline,
+				Cmdline: cmdline,
 				Total:   1,
 				Count: [STAT_LAST]uint64{
 					STAT_CORE: 1,
@@ -94,7 +94,7 @@ func TestStatsUpdate(t *testing.T) {
 		{
 			events: []int{STAT_COMM},
 			expected: &Stats{
-				Cmdline: self_cmdline,
+				Cmdline: cmdline,
 				Total:   1,
 				Count: [STAT_LAST]uint64{
 					STAT_COMM: 1,
@@ -104,13 +104,13 @@ func TestStatsUpdate(t *testing.T) {
 		{
 			events: []int{99},
 			expected: &Stats{
-				Cmdline: self_cmdline,
+				Cmdline: cmdline,
 			},
 		},
 		{
 			events: []int{STAT_FORK, STAT_EXEC},
 			expected: &Stats{
-				Cmdline: self_cmdline,
+				Cmdline: cmdline,
 				Total:   2,
 				Count: [STAT_LAST]uint64{
 					STAT_FORK: 1,
@@ -121,7 +121,7 @@ func TestStatsUpdate(t *testing.T) {
 		{
 			events: []int{STAT_FORK, STAT_FORK, STAT_EXEC},
 			expected: &Stats{
-				Cmdline: self_cmdline,
+				Cmdline: cmdline,
 				Total:   3,
 				Count: [STAT_LAST]uint64{
 					STAT_FORK: 2,
@@ -132,7 +132,7 @@ func TestStatsUpdate(t *testing.T) {
 	}
 
 	for _, testcase := range testcases {
-		stats := NewStats(self_cmdline)
+		stats := NewStats(cmdline)
 		if stats == nil {
 			t.Errorf("Fail to make Stats")
 			break
@@ -156,16 +156,16 @@ func TestStatsMapList(t *testing.T) {
 		return
 	}
 
-	stats := NewStats(self_cmdline)
+	cmdline := self_cmdline.String()
+
+	stats := NewStats(cmdline)
 	if stats == nil {
 		t.Errorf("Fail to make Stats")
 		return
 	}
 
-	name := self_cmdline.String()
-
 	stats_map := StatsMap{
-		name: stats,
+		cmdline: stats,
 	}
 
 	stats_list := stats_map.List()

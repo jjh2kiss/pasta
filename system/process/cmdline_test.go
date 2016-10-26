@@ -189,3 +189,91 @@ func TestCmdlineShortString(t *testing.T) {
 		}
 	}
 }
+
+func TestCmdlineCombinedString(t *testing.T) {
+	testcases := []struct {
+		cmdline      *Cmdline
+		kernelThread bool
+		short        bool
+		dirstrip     bool
+		expected     string
+	}{
+		//kernel thread
+		{
+			cmdline:      &Cmdline{slice: []string{"kworker"}},
+			kernelThread: true,
+			short:        false,
+			dirstrip:     false,
+			expected:     "[kworker]",
+		},
+		{
+			cmdline:      &Cmdline{slice: []string{"kworker"}},
+			kernelThread: false,
+			short:        false,
+			dirstrip:     false,
+			expected:     "kworker",
+		},
+
+		//short
+		{
+			cmdline:      &Cmdline{slice: []string{"kworker", "1", "2"}},
+			kernelThread: false,
+			short:        true,
+			dirstrip:     false,
+			expected:     "kworker",
+		},
+		{
+			cmdline:      &Cmdline{slice: []string{"kworker", "1", "2"}},
+			kernelThread: false,
+			short:        false,
+			dirstrip:     false,
+			expected:     "kworker 1 2",
+		},
+
+		//dirstrip
+		{
+			cmdline:      &Cmdline{slice: []string{"/bin/bash"}},
+			kernelThread: false,
+			short:        false,
+			dirstrip:     true,
+			expected:     "bash",
+		},
+		{
+			cmdline:      &Cmdline{slice: []string{"/bin/bash"}},
+			kernelThread: false,
+			short:        false,
+			dirstrip:     false,
+			expected:     "/bin/bash",
+		},
+
+		//short on + dirstrip on
+		{
+			cmdline:      &Cmdline{slice: []string{"/bin/bash", "1", "2"}},
+			kernelThread: false,
+			short:        true,
+			dirstrip:     true,
+			expected:     "bash",
+		},
+		//short off + dirstrip on
+		{
+			cmdline:      &Cmdline{slice: []string{"/bin/bash", "1", "2"}},
+			kernelThread: false,
+			short:        false,
+			dirstrip:     true,
+			expected:     "bash 1 2",
+		},
+	}
+
+	for _, testcase := range testcases {
+		actual := testcase.cmdline.CombinedString(testcase.kernelThread,
+			testcase.short,
+			testcase.dirstrip)
+
+		if actual != testcase.expected {
+			t.Errorf("expected\n%s\nBut\n%s\n",
+				testcase.expected,
+				actual,
+			)
+		}
+	}
+}

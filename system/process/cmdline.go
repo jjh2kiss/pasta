@@ -21,6 +21,8 @@ func NewCmdline(reader io.Reader) (*Cmdline, error) {
 		return nil, err
 	}
 
+	cmdline = bytes.TrimSpace(cmdline)
+
 	if len(cmdline) == 0 {
 		return &Cmdline{}, nil
 	}
@@ -68,4 +70,29 @@ func (self *Cmdline) ShortString(n int) string {
 
 func (self *Cmdline) Slice() []string {
 	return self.slice
+}
+
+func (self *Cmdline) CombinedString(kernelThread bool, short bool, dirstrip bool) string {
+	if self == nil {
+		return ""
+	}
+
+	name := ""
+
+	if short == true {
+		name = self.ShortString(1)
+	} else {
+		name = self.String()
+	}
+
+	if dirstrip == true {
+		name = path.Base(name)
+	}
+
+	if kernelThread == true {
+		name = "[" + name + "]"
+	}
+
+	return name
+
 }
