@@ -18,7 +18,8 @@ $ cd $GOPATH
 $ go get github.com/jjh2kiss/pstat
 $ cd ./src/github/jjh2kiss/pstat
 $ go build
-$ sudo ./pstat
+$ go install
+$ sudo pstat
 ```
 
 ### binary
@@ -26,7 +27,8 @@ $ sudo ./pstat
 $ cd $GOPATH
 $ git clone git@github.com:jjh2kiss/pstat.git
 $ cd ./src/github/jjh2kiss/pstat/bin
-$ sudo ./pstat
+$ sudo cp ./pstat /usr/local/bin
+$ sudo pstat
 ```
 
 ## pstat command line options:
