@@ -12,6 +12,7 @@ install:
     - go get golang.org/x/tools/cmd/goimports
     - go get github.com/jjh2kiss/netlinkconnector
     - go get github.com/urfave/cli
+    - go get golang.org/x/net/context
 
 before_script:
     # make sure we keep path in tact when we sudo
