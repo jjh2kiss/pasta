@@ -22,7 +22,7 @@ func processExitEvent(event *cnproc.ProcEvent, process_table *process.ProcessTab
 	if config.Quiet == false {
 		if config.Events&event.What != 0 {
 			name := process.Cmdline.CombinedString(process.KernelThread, config.Shortname, config.Dirstrip)
-			log.Printf("exit %5d  %5d    %5.3f %s\n",
+			logger.Printf("exit %5d  %5d %8.3f %s\n",
 				ev.ProcessPid,
 				ev.ExitCode,
 				duration.Seconds(),
