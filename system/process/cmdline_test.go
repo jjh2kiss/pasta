@@ -282,6 +282,32 @@ func TestCmdlineCombinedString(t *testing.T) {
 			expected:     "/bin/bash",
 		},
 
+		//issue #9 test code
+		{
+			cmdline:      &Cmdline{slice: []string{"/bin/bash", "1", "2", "3", "--path=/home/abc"}},
+			kernelThread: false,
+			short:        false,
+			dirstrip:     true,
+			expected:     "bash 1 2 3 --path=/home/abc",
+		},
+
+		//issue #9 test code
+		{
+			cmdline:      &Cmdline{slice: []string{"/bin/bash", "1", "2", "3", "--path=/home/abc"}},
+			kernelThread: false,
+			short:        true,
+			dirstrip:     true,
+			expected:     "bash",
+		},
+		//issue #9 test code
+		{
+			cmdline:      &Cmdline{slice: []string{""}},
+			kernelThread: false,
+			short:        true,
+			dirstrip:     true,
+			expected:     "",
+		},
+
 		//short on + dirstrip on
 		{
 			cmdline:      &Cmdline{slice: []string{"/bin/bash", "1", "2"}},

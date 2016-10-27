@@ -84,20 +84,23 @@ func (self *Cmdline) CombinedString(kernelThread bool, short bool, dirstrip bool
 		return ""
 	}
 
-	name := ""
-
-	if short == true {
-		name = self.ShortString(1)
-	} else {
-		name = self.String()
+	if len(self.slice) == 0 {
+		return ""
 	}
 
-	if dirstrip == true {
+	name := self.slice[0]
+
+	if dirstrip == true && name != "" {
 		name = path.Base(name)
 	}
 
 	if kernelThread == true {
 		name = "[" + name + "]"
+	}
+
+	if short == false && len(self.slice) > 1 {
+		args := strings.Join(self.slice[1:], " ")
+		name = name + " " + args
 	}
 
 	return name
