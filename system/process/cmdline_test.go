@@ -65,6 +65,42 @@ func TestNewCmdline(t *testing.T) {
 	}
 }
 
+//#8 google chrome cmdline error
+//구글 chrome는 구분자가 space 임
+func TestNewCmdlineGoogleChrome(t *testing.T) {
+	testcases := []struct {
+		cmdline  string
+		expected []string
+	}{
+		{
+			cmdline: "/opt/google/chrome/chrome --type=renderer --enable-features=MaterialDesignUserManager",
+			expected: []string{
+				"/opt/google/chrome/chrome",
+				"--type=renderer",
+				"--enable-features=MaterialDesignUserManager",
+			},
+		},
+	}
+
+	for _, testcase := range testcases {
+		reader := strings.NewReader(testcase.cmdline)
+		actual, err := NewCmdline(reader)
+		if err != nil {
+			t.Errorf(err.Error())
+			return
+		}
+
+		if StringListEqual(actual.slice, testcase.expected) == false {
+			t.Errorf("expected\n%s(%d)\nBut\n%s(%d)\n",
+				testcase.expected,
+				len(testcase.expected),
+				actual.slice,
+				len(actual.slice),
+			)
+		}
+	}
+}
+
 func TestNewCmdlineByPid(t *testing.T) {
 	testcases := []struct {
 		expected []string

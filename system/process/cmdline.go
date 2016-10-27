@@ -35,7 +35,14 @@ func NewCmdline(reader io.Reader) (*Cmdline, error) {
 		return &Cmdline{}, nil
 	}
 
-	parts := bytes.Split(cmdline, []byte{0})
+	//issue #8 google chrome 는 args가 space를 이용해 구분되어 있음
+	// 널문자를 포함하는 경우 null로 구분, 그렇지 않다면 sp로 구분한다.
+	sep := []byte{32}
+	if bytes.Contains(cmdline, []byte{0}) {
+		sep = []byte{0}
+	}
+
+	parts := bytes.Split(cmdline, sep)
 	strParts := []string{}
 	for _, p := range parts {
 		strParts = append(strParts, string(p))
