@@ -20,6 +20,7 @@ pstat command link options:
   * --version, -v               print the version
 
 Example:
+```
     sudo ./pstat -S
     Time                Event  PID   Info Duration Process
     2016/10/27 14:13:24 fork  1366 parent          sudo ./pstat -S
@@ -53,5 +54,6 @@ Example:
     2016/10/27 14:13:34 exec  1382                 bash
     2016/10/27 14:13:34 fork  1382 parent          bash
     2016/10/27 14:13:34 fork  1383 child           bash
+```
 
 
