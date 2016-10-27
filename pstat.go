@@ -63,7 +63,7 @@ func main() {
 		},
 		cli.StringSliceFlag{
 			Name:  "e, event",
-			Usage: "select which events to monitor",
+			Usage: "select which events to monitor(default: all)",
 		},
 		cli.BoolFlag{
 			Name:  "s, shortname",
