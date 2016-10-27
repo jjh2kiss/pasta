@@ -30,6 +30,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/urfave/cli"
 
@@ -80,17 +81,6 @@ func main() {
 
 	config := config.Config{}
 
-	ctx, cancel := context.WithCancel(context.Background())
-
-	//signal handler
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-
-	go func() {
-		<-sigs
-		cancel()
-	}()
-
 	app.Before = func(c *cli.Context) error {
 		if os.Geteuid() != 0 {
 			return fmt.Errorf("Need to run with root privilege.\n")
@@ -116,6 +106,28 @@ func main() {
 	}
 
 	app.Action = func(c *cli.Context) {
+		ctx, cancel := context.WithCancel(context.Background())
+
+		//signal handler
+		sigs := make(chan os.Signal, 1)
+		signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+
+		go func() {
+			<-sigs
+			cancel()
+		}()
+
+		//timeout
+		if config.Duration > 0 {
+			go func() {
+				select {
+				case <-time.After(time.Duration(config.Duration) * time.Second):
+					cancel()
+				}
+			}()
+		}
+
+		//run monitor
 		err := monitor.Monitor(&config, ctx.Done())
 		if err != nil {
 			log.Fatal(err.Error())

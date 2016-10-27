@@ -78,12 +78,14 @@ func Monitor(config *config.Config, done <-chan struct{}) error {
 				}
 			}
 		case <-done:
-			if config.Statistics {
-				SpacePrinter(os.Stdout, stats_table.List())
-			}
 			goto End
 		}
 	}
+
 End:
+	if config.Statistics {
+		SpacePrinter(os.Stdout, stats_table.List())
+	}
+
 	return nil
 }
