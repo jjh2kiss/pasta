@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/jjh2kiss/pstat/system"
+	"github.com/jjh2kiss/pasta/system"
 )
 
 type Process struct {

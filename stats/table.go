@@ -3,8 +3,8 @@ package stats
 import (
 	"sync"
 
-	"github.com/jjh2kiss/pstat/config"
-	"github.com/jjh2kiss/pstat/system/process"
+	"github.com/jjh2kiss/pasta/config"
+	"github.com/jjh2kiss/pasta/system/process"
 )
 
 type StatsTable struct {

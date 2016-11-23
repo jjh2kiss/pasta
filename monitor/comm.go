@@ -4,9 +4,9 @@ import (
 	"log"
 
 	"github.com/jjh2kiss/netlinkconnector/cnproc"
-	"github.com/jjh2kiss/pstat/config"
-	"github.com/jjh2kiss/pstat/stats"
-	"github.com/jjh2kiss/pstat/system/process"
+	"github.com/jjh2kiss/pasta/config"
+	"github.com/jjh2kiss/pasta/stats"
+	"github.com/jjh2kiss/pasta/system/process"
 )
 
 func processCommEvent(event *cnproc.ProcEvent, process_table *process.ProcessTable, stats_table *stats.StatsTable, config *config.Config, logger *log.Logger) error {

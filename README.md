@@ -1,37 +1,37 @@
-# pstat
-[![Build Status](https://travis-ci.org/jjh2kiss/pstat.png?branch=master)](https://travis-ci.org/jjh2kiss/pstat)  
+# pasta
+[![Build Status](https://travis-ci.org/jjh2kiss/pasta.png?branch=master)](https://travis-ci.org/jjh2kiss/pasta)  
 
 process fork/exec/exit monitoring tool(go implementation of forkstat)
 
-pstat is a programm that logs process fork, exec, exit, crashdump, comm activity
+pasta is a programm that logs process fork, exec, exit, crashdump, comm activity
 It is very useful for monitoring process behaviour and to track down processes
 
-pstat uses the CN_PROC of Linux Netlink Connector to gather process activity
-pstat may miss events if the system is overly busy
+pasta uses the CN_PROC of Linux Netlink Connector to gather process activity
+pasta may miss events if the system is overly busy
 Netlink Connector requires root privilege.
-pstat same as forkstat(http://kernel.ubuntu.com/~cking/forkstat/)
+pasta same as forkstat(http://kernel.ubuntu.com/~cking/forkstat/)
 
 ## Install
 ### compiler
 ```
 $ cd $GOPATH
-$ go get github.com/jjh2kiss/pstat
-$ cd ./src/github/jjh2kiss/pstat
+$ go get github.com/jjh2kiss/pasta
+$ cd ./src/github/jjh2kiss/pasta
 $ go build
 $ go install
-$ sudo pstat
+$ sudo pasta
 ```
 
 ### binary
 ```
 $ cd $GOPATH
-$ git clone git@github.com:jjh2kiss/pstat.git
-$ cd ./src/github/jjh2kiss/pstat/bin
-$ sudo cp ./pstat /usr/local/bin
-$ sudo pstat
+$ git clone git@github.com:jjh2kiss/pasta.git
+$ cd ./src/github/jjh2kiss/pasta/bin
+$ sudo cp ./pasta /usr/local/bin
+$ sudo pasta
 ```
 
-## pstat command line options:
+## pasta command line options:
   * -d, --dirstrip              strip off the directory path from the process name
   * -D value, --duration value  specify run duration in seconds (default: 0)
   * -e value, --event value     select which events to monitor(default: all)
@@ -45,12 +45,12 @@ $ sudo pstat
 
 ### monitoring all process event
 ```
-sudo ./pstat -S
+sudo ./pasta -S
 Time                Event  PID   Info Duration Process
-2016/10/27 14:13:24 fork  1366 parent          sudo ./pstat -S
-2016/10/27 14:13:24 fork  1373 child           ./pstat -S
-2016/10/27 14:13:24 fork  1366 parent          sudo ./pstat -S
-2016/10/27 14:13:24 fork  1374 child           ./pstat -S
+2016/10/27 14:13:24 fork  1366 parent          sudo ./pasta -S
+2016/10/27 14:13:24 fork  1373 child           ./pasta -S
+2016/10/27 14:13:24 fork  1366 parent          sudo ./pasta -S
+2016/10/27 14:13:24 fork  1374 child           ./pasta -S
 2016/10/27 14:13:34 fork  2030 parent          /usr/lib/unity-settings-daemon/unity-settings-daemon
 2016/10/27 14:13:34 fork  1375 child           /usr/lib/unity-settings-daemon/unity-settings-daemon
 2016/10/27 14:13:34 fork  1375 parent          /usr/lib/unity-settings-daemon/unity-settings-daemon
@@ -83,7 +83,7 @@ Time                Event  PID   Info Duration Process
 ### monitoring coredump event
 
 ```
-sudo ./pstat -e coredump -e exec -e exit | grep segfault
+sudo ./pasta -e coredump -e exec -e exit | grep segfault
 2016/10/27 14:49:41 exec  2707                 ./segfault
 2016/10/27 14:49:43 core  2707                 ./segfault
 2016/10/27 14:49:43 exit  2707    139    2.089 ./segfault

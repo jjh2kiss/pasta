@@ -5,7 +5,7 @@ import (
 	"io"
 	"sort"
 
-	"github.com/jjh2kiss/pstat/stats"
+	"github.com/jjh2kiss/pasta/stats"
 )
 
 func SpacePrinter(output io.Writer, l stats.StatsList) {

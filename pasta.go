@@ -34,9 +34,9 @@ import (
 
 	"github.com/urfave/cli"
 
-	"github.com/jjh2kiss/pstat/config"
-	"github.com/jjh2kiss/pstat/monitor"
-	"github.com/jjh2kiss/pstat/utils"
+	"github.com/jjh2kiss/pasta/config"
+	"github.com/jjh2kiss/pasta/monitor"
+	"github.com/jjh2kiss/pasta/utils"
 	"golang.org/x/net/context"
 )
 

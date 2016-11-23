@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jjh2kiss/pstat/system/sched"
+	"github.com/jjh2kiss/pasta/system/sched"
 )
 
 var running_in_container bool

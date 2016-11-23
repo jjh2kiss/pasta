@@ -6,7 +6,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/jjh2kiss/pstat/system/process"
+	"github.com/jjh2kiss/pasta/system/process"
 )
 
 func TestStatsNewStat(t *testing.T) {

@@ -6,9 +6,9 @@ import (
 	"os"
 
 	"github.com/jjh2kiss/netlinkconnector/cnproc"
-	"github.com/jjh2kiss/pstat/config"
-	"github.com/jjh2kiss/pstat/stats"
-	"github.com/jjh2kiss/pstat/system/process"
+	"github.com/jjh2kiss/pasta/config"
+	"github.com/jjh2kiss/pasta/stats"
+	"github.com/jjh2kiss/pasta/system/process"
 )
 
 func Monitor(config *config.Config, done <-chan struct{}) error {
